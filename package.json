@@ -1,18 +1,40 @@
 {
   "name": "cloud-service-discovery",
   "version": "1.0.0",
-  "description": "",
+  "description": "A nodejs microservice discovery helper",
   "main": "index.js",
-  "scripts": {
-    "start": "ts-node src/server.ts",
-    "start:dev": "nodemon"
+  "types": "index.d.ts",
+  "homepage": "https://github.com/DBetta/cloud-service-discovery",
+  "keywords": [
+    "nodejs microservice",
+    "nestjs microservice",
+    "consul nodejs"
+  ],
+  "bugs": {
+    "email": "denisbgitonga@gmail.com",
+    "url": "https://github.com/DBetta/cloud-service-discovery/issues"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Denis Gitonga <denisbgitonga@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DBetta/cloud-service-discovery.git"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "consul": "^0.37.0",
+    "ip": "^1.1.5",
+    "lodash": "^4.17.15",
+    "uuid": "^8.1.0"
+  },
   "devDependencies": {
     "@types/consul": "^0.23.34",
-    "@types/express": "^4.17.6",
     "@types/lodash": "^4.14.153",
     "@types/node": "^14.0.5",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
@@ -20,16 +42,8 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
-    "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.3"
-  },
-  "dependencies": {
-    "consul": "^0.37.0",
-    "express": "^4.17.1",
-    "ip": "^1.1.5",
-    "lodash": "^4.17.15",
-    "uuid": "^8.1.0"
   }
 }
