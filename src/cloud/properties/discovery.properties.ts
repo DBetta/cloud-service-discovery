@@ -5,5 +5,4 @@ export interface DiscoveryProperties {
   healthCheckCriticalTimeout?: string;
 
   healthCheckUrl?: string;
-
 }

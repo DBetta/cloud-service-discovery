@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace NewService {
   export interface Check {
     http?: string;

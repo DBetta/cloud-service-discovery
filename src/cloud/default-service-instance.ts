@@ -41,7 +41,7 @@ export class DefaultServiceInstance implements ServiceInstance {
   getUri(): string {
     const scheme = this.getScheme();
 
-    return `${scheme}://${this.getHost()}:${this.getPort()}`
+    return `${scheme}://${this.getHost()}:${this.getPort()}`;
   }
 
   getScheme(): string {

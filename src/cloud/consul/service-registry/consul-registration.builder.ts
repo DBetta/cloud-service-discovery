@@ -1,11 +1,11 @@
-import { RegistrationBuilder } from '../registration.builder';
-import { HeartbeatProperties } from '../properties';
-import { Registration } from '../registration';
-import { ConsulRegistration } from './service-registry';
-import { NewService } from './models';
-import { ConsulDiscoveryProperties } from './properties/consul-discovery.properties';
+import { RegistrationBuilder } from '../../registration.builder';
+import { HeartbeatProperties } from '../../properties';
+import { Registration } from '../../registration';
+import { ConsulRegistration } from './index';
+import { NewService } from '../models';
+import { ConsulDiscoveryProperties } from '../properties';
 import * as uuid from 'uuid';
-import { IpUtils } from './utils/ip-utils';
+import { IpUtils } from '../utils';
 
 export class ConsulRegistrationBuilder implements RegistrationBuilder {
   private _serviceName: string | undefined;
@@ -50,24 +50,17 @@ export class ConsulRegistrationBuilder implements RegistrationBuilder {
     return this;
   }
 
-  scheme(scheme: string): RegistrationBuilder {
-    return this;
-  }
-
   build(): Registration {
-    if (this._serviceName == null)
-      throw Error('serviceName is required');
+    if (this._serviceName == null) throw Error('serviceName is required');
 
     if (this._host == null) {
       // get ip address
       this._host = IpUtils.getIpAddress();
     }
 
-    if (this._port == null)
-      throw Error('port is required');
+    if (this._port == null) throw Error('port is required');
 
-    if (this._discoveryProperties == null)
-      throw Error('ConsulDiscoveryProperties is required.');
+    if (this._discoveryProperties == null) throw Error('ConsulDiscoveryProperties is required.');
 
     const scheme = this._discoveryProperties?.scheme;
     const isSecure = scheme == 'https';
@@ -80,7 +73,7 @@ export class ConsulRegistrationBuilder implements RegistrationBuilder {
 
     const check: NewService.Check = this.createCheck();
 
-    let newService: NewService.Service = {
+    const newService: NewService.Service = {
       name: this._serviceName,
       port: this._port,
       address: this._host,
@@ -119,5 +112,4 @@ export class ConsulRegistrationBuilder implements RegistrationBuilder {
 
     return check;
   }
-
 }

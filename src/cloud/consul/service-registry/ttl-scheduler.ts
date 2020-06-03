@@ -22,11 +22,7 @@ class ConsulHeartbeatTask {
 }
 
 export class TtlScheduler {
-
-  constructor(
-    private heartbeatProperties: HeartbeatProperties,
-    private consulClient: Consul.Consul,
-  ) {
+  constructor(private heartbeatProperties: HeartbeatProperties, private consulClient: Consul.Consul) {
   }
 
   /**
@@ -34,7 +30,7 @@ export class TtlScheduler {
    *
    * @param instanceId instance id
    */
-  add(instanceId: string) {
+  add(instanceId: string): void {
     const task = new ConsulHeartbeatTask(this.consulClient, instanceId);
     const taskId = setInterval(() => {
       task.run();
@@ -47,7 +43,7 @@ export class TtlScheduler {
     tasks.set(instanceId, taskId);
   }
 
-  remove(instanceId: string) {
+  remove(instanceId: string): void {
     const taskId = tasks.get(instanceId);
     if (taskId) {
       clearInterval(taskId);

@@ -7,17 +7,14 @@ import { ConsulDiscoveryProperties } from '../properties/consul-discovery.proper
  *
  */
 export class ConsulRegistration implements Registration {
-  constructor(
-    private newService: NewService.Service,
-    private consulDiscoveryProperties: ConsulDiscoveryProperties
-  ) {}
+  constructor(private newService: NewService.Service, private consulDiscoveryProperties: ConsulDiscoveryProperties) {}
 
   getService(): NewService.Service {
     return this.newService;
   }
 
   getInstanceId(): string {
-    return this.newService.id || "";
+    return this.newService.id || '';
   }
 
   getServiceId(): string {
@@ -25,7 +22,7 @@ export class ConsulRegistration implements Registration {
   }
 
   getHost(): string {
-    return this.newService.address || "";
+    return this.newService.address || '';
   }
 
   getPort(): number {
@@ -33,7 +30,7 @@ export class ConsulRegistration implements Registration {
   }
 
   isSecure(): boolean {
-    return this.consulDiscoveryProperties.scheme === "https";
+    return this.consulDiscoveryProperties.scheme === 'https';
   }
 
   getUri(): string {
@@ -43,7 +40,7 @@ export class ConsulRegistration implements Registration {
   }
 
   getScheme(): string {
-    return this.consulDiscoveryProperties.scheme || "http";
+    return this.consulDiscoveryProperties.scheme || 'http';
   }
 
   getMetadata(): Map<string, string> {

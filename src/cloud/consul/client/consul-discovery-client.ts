@@ -1,10 +1,10 @@
-import Consul, { Thenable } from "consul";
+import Consul, { Thenable } from 'consul';
 
-import { DiscoveryClient } from "../../discovery-client";
-import { ServiceInstance } from "../../service-instance";
-import { DefaultServiceInstance } from "../../default-service-instance";
-import _ from "lodash";
-import { ConsulUtils } from "../utils/consul-utils";
+import { DiscoveryClient } from '../../discovery-client';
+import { ServiceInstance } from '../../service-instance';
+import { DefaultServiceInstance } from '../../default-service-instance';
+import _ from 'lodash';
+import { ConsulUtils } from '../utils/consul-utils';
 import { ConsulProperties } from '../properties/consul.properties';
 
 export class ConsulDiscoveryClient implements DiscoveryClient {
@@ -19,16 +19,14 @@ export class ConsulDiscoveryClient implements DiscoveryClient {
   }
 
   description(): string {
-    return "Consul Discovery Client";
+    return 'Consul Discovery Client';
   }
 
   async getInstances(serviceId: string): Promise<ServiceInstance[]> {
     return this.addInstancesToList(serviceId);
   }
 
-  private async addInstancesToList(
-    serviceId: string
-  ): Promise<ServiceInstance[]> {
+  private async addInstancesToList(serviceId: string): Promise<ServiceInstance[]> {
     const token = this.consulProperties.aclToken;
 
     let serviceOptions: Consul.Health.ServiceOptions = {
@@ -40,16 +38,14 @@ export class ConsulDiscoveryClient implements DiscoveryClient {
       serviceOptions = { ...serviceOptions, token: token };
     }
 
-    const healthServices: any[] = await this.consulClient.health.service(
-      serviceOptions
-    );
+    const healthServices: any[] = await this.consulClient.health.service(serviceOptions);
 
     return healthServices.map((healthService) => {
       const host = this.findHost(healthService);
       const metadata = this.getMetadata(healthService.Service.Tags || []);
       let secure = false;
-      if (metadata.has("secure")) {
-        secure = /true/i.test(metadata.get("secure") || "");
+      if (metadata.has('secure')) {
+        secure = /true/i.test(metadata.get('secure') || '');
       }
 
       return new DefaultServiceInstance(
@@ -58,7 +54,7 @@ export class ConsulDiscoveryClient implements DiscoveryClient {
         host,
         healthService.Service.Port,
         secure,
-        metadata
+        metadata,
       );
     });
   }
@@ -82,9 +78,7 @@ export class ConsulDiscoveryClient implements DiscoveryClient {
 
   async getAllInstances(): Promise<ServiceInstance[]> {
     const services = await this.getServices();
-    const allServices = await Promise.all(
-      services.map((serviceId) => this.addInstancesToList(serviceId))
-    );
+    const allServices = await Promise.all(services.map((serviceId) => this.addInstancesToList(serviceId)));
 
     return _.flatten(allServices);
   }

@@ -13,7 +13,8 @@
   ],
   "exclude": [
     "node_modules",
+    "**/__tests__/*",
     "examples",
-    "src/search"
+    "examples/src/search"
   ]
 }

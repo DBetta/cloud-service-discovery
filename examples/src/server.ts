@@ -1,5 +1,4 @@
 import express from 'express';
-import { } from ''
 import { ConsulRegistration } from './cloud/consul/service-registry';
 import { ConsulServiceRegistrationBuilder } from './cloud/consul/service-registry/consul-service-registration.builder';
 import { ConsulRegistrationBuilder } from './cloud/consul/consul-registration.builder';

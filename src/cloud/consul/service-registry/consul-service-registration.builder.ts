@@ -1,11 +1,9 @@
 import { ServiceRegistryBuilder } from '../../service-registry.builder';
 import { ServiceRegistration } from '../../service-registration';
 import { Registration } from '../../registration';
-import { RegistrationBuilder } from '../../registration.builder';
 import { HeartbeatProperties } from '../../properties';
-import { ConsulProperties } from '../properties/consul.properties';
+import { ConsulDiscoveryProperties, ConsulProperties } from '../properties';
 import { ConsulServiceRegistry } from './consul-service-registry';
-import { ConsulDiscoveryProperties } from '../properties/consul-discovery.properties';
 import Consul from 'consul';
 import { TtlScheduler } from './ttl-scheduler';
 
@@ -37,15 +35,11 @@ export class ConsulServiceRegistrationBuilder implements ServiceRegistryBuilder 
   }*/
 
   build(): ServiceRegistration<Registration> {
+    if (this._consulProperties == null) throw Error('ConsulProperties is required');
 
-    if (this._consulProperties == null)
-      throw Error('ConsulProperties is required');
+    if (this._heartbeatProperties == null) throw Error('HeartbeatProperties is required');
 
-    if (this._heartbeatProperties == null)
-      throw Error('HeartbeatProperties is required');
-
-    if (this._consulDiscoveryProperties == null)
-      throw Error('ConsulDiscoveryProperties is required.');
+    if (this._consulDiscoveryProperties == null) throw Error('ConsulDiscoveryProperties is required.');
 
     const consulClient = Consul({
       host: this._consulProperties.host,
@@ -56,10 +50,7 @@ export class ConsulServiceRegistrationBuilder implements ServiceRegistryBuilder 
 
     let ttlScheduler;
     if (this._heartbeatProperties.enabled) {
-      ttlScheduler = new TtlScheduler(
-        this._heartbeatProperties,
-        consulClient,
-      );
+      ttlScheduler = new TtlScheduler(this._heartbeatProperties, consulClient);
     }
 
     return new ConsulServiceRegistry(
@@ -70,5 +61,4 @@ export class ConsulServiceRegistrationBuilder implements ServiceRegistryBuilder 
       ttlScheduler,
     );
   }
-
 }

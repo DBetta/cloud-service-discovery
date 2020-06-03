@@ -37,5 +37,5 @@ export interface ServiceInstance {
   /**
    * @returns the key / value pair associated with the service id.
    */
-  getMetadata(): Map<string, string>
+  getMetadata(): Map<string, string>;
 }

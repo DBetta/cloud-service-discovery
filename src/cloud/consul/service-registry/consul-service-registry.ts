@@ -9,24 +9,19 @@ import { ConsulDiscoveryProperties } from '../properties/consul-discovery.proper
 /**
  *
  */
-export class ConsulServiceRegistry
-  implements ServiceRegistration<ConsulRegistration> {
-
+export class ConsulServiceRegistry implements ServiceRegistration<ConsulRegistration> {
   constructor(
     private consulClient: Consul.Consul,
     private consulProperties: ConsulProperties,
     private heartbeatProperties: HeartbeatProperties,
     private consulDiscoveryProperties: ConsulDiscoveryProperties,
     private ttlScheduler?: TtlScheduler,
-  ) {
-  }
+  ) {}
 
   async register(registration: ConsulRegistration): Promise<void> {
     console.log('registering service with id:', registration.getInstanceId());
     try {
-      const token = !!this.consulProperties.aclToken
-        ? { token: this.consulProperties.aclToken }
-        : {};
+      const token = !!this.consulProperties.aclToken ? { token: this.consulProperties.aclToken } : {};
 
       const options = {
         ...registration.getService(),
@@ -36,35 +31,22 @@ export class ConsulServiceRegistry
       await this.consulClient.agent.service.register(options);
 
       const service = registration.getService();
-      if (
-        this.heartbeatProperties.enabled &&
-        this.ttlScheduler != null &&
-        service.check?.ttl != null
-      ) {
+      if (this.heartbeatProperties.enabled && this.ttlScheduler != null && service.check?.ttl != null) {
         this.ttlScheduler.add(registration.getInstanceId());
       }
     } catch (e) {
       if (this.consulDiscoveryProperties.failFast) {
         throw e;
       }
-      console.warn(
-        'Fail fast is false. Error registering service with consul:',
-        registration.getService(),
-        e,
-      );
+      console.warn('Fail fast is false. Error registering service with consul:', registration.getService(), e);
     }
   }
 
   async deregister(registration: ConsulRegistration): Promise<void> {
-    console.log(
-      'Deregistering service with consul:',
-      registration.getInstanceId(),
-    );
+    console.log('Deregistering service with consul:', registration.getInstanceId());
     this.ttlScheduler?.remove(registration.getInstanceId());
 
-    const token = !!this.consulProperties.aclToken
-      ? { token: this.consulProperties.aclToken }
-      : {};
+    const token = !!this.consulProperties.aclToken ? { token: this.consulProperties.aclToken } : {};
     const options = { id: registration.getInstanceId(), ...token };
     await this.consulClient.agent.service.deregister(options);
   }
@@ -74,7 +56,6 @@ export class ConsulServiceRegistry
   }
 
   async setStatus(registration: ConsulRegistration, status: string): Promise<void> {
-
     if (status == 'OUT_OF_SERVICE') {
       // enable maintenance mode
       await this.consulClient.agent.service.maintenance({
@@ -82,7 +63,6 @@ export class ConsulServiceRegistry
         enable: true,
       });
     } else if (status == 'UP') {
-
     }
 
     throw new Error('Unknown status ' + status);

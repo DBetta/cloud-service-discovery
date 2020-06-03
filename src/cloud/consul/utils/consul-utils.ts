@@ -3,7 +3,7 @@ export class ConsulUtils {
     const metadata = new Map<string, string>();
 
     for (const tag of tags) {
-      const parts = tag.split("=");
+      const parts = tag.split('=');
       metadata.set(parts[0], parts[1]);
     }
 

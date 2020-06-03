@@ -20,7 +20,7 @@ export class ProcessSearch {
       prev: null,
     });
 
-    return  this.queries;
+    return this.queries;
   }
 
   // eslint-disable-next-line

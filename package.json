@@ -2,8 +2,6 @@
   "name": "cloud-service-discovery",
   "version": "1.0.0",
   "description": "A nodejs microservice discovery helper",
-  "main": "index.js",
-  "types": "index.d.ts",
   "homepage": "https://github.com/DBetta/cloud-service-discovery",
   "keywords": [
     "nodejs microservice",
@@ -25,7 +23,12 @@
     "lib/**/*"
   ],
   "scripts": {
-    "build": "tsc"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "build": "tsc",
+    "test": "jest --passWithNoTests --config jestconfig.json",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
     "consul": "^0.37.0",
@@ -35,6 +38,7 @@
   },
   "devDependencies": {
     "@types/consul": "^0.23.34",
+    "@types/jest": "^25.2.3",
     "@types/lodash": "^4.14.153",
     "@types/node": "^14.0.5",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
@@ -42,7 +46,9 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
+    "jest": "^26.0.1",
     "prettier": "^2.0.5",
+    "ts-jest": "^26.1.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.3"
   }

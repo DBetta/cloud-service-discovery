@@ -1,4 +1,4 @@
-import { ServiceInstance } from "./service-instance";
+import { ServiceInstance } from './service-instance';
 
 /**
  * Represents read operations commonly available to discovery services such as consul.io
